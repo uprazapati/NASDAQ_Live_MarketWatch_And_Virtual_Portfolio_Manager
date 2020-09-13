@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portflio
+{% endblock %}
+
+{% block main %}
+    <table id="symboltable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td id="total">{{total}}</td>
+            </tr>
+        </tfoot>
+        <tbody>
+             {% for stock in stocksListWithPrice %}
+                <tr>
+                    <td>{{stock["symbol"]}}</td>
+                    <td>{{stock["name"]}}</td>
+                    <td>{{stock["shares"]}}</td>
+                    <td>{{stock["price"]}}</td>
+                    <td>{{stock["total"]}}</td>
+                </tr>
+             {% endfor %}
+            <tr>
+                <td colspan="4">CASH</td>
+                <td id="cash">{{cash}}</td>
+            </tr>
+        </tbody>
+    </table>
+	   <script src="../static/tableUpdate.js"></script>
+    <script>
+        window.onload = function() {
+        startUpdate();
+      };
+    </script>
+{% endblock %}
