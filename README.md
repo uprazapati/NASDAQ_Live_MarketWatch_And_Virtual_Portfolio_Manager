@@ -69,6 +69,7 @@ CONFIGURATION
 For MacOs or Linux
 - In a terminal window, execute:
 export API_KEY=value
+
 For Windows
 - In command prompt, execute:
 set API_KEY=value
