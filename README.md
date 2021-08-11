@@ -66,10 +66,10 @@ CONFIGURATION
 - Click API Tokens.
 - Copy the key that appears under the Token column (it should begin with pk_).
 
-If MacOs or Linux
+For MacOs or Linux
 - In a terminal window, execute:
 export API_KEY=value
-If Windows
+For Windows
 - In command prompt, execute:
 set API_KEY=value
 
