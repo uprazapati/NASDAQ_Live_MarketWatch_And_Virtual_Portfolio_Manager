@@ -9,6 +9,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+import csv
 
 
 from helpers import apology, login_required, lookup, usd, getQuote, lookups
@@ -41,6 +42,14 @@ Session(app)
 db = SQL("sqlite:///finance.db")
 symbolsDict = {}
 historyDict = {}
+quotes = []
+
+with open('nasdaq.csv', 'r',) as file:
+    reader = csv.reader(file, delimiter = ',')
+    for row in reader:
+        quotes.append(row[0])
+
+print(quotes)
 
 symbolsRows = db.execute("select uid, symbol from stocks")
 for symbol in symbolsRows:
@@ -118,7 +127,7 @@ def index():
 def buy():
     """Buy shares of stock"""
     if request.method == "GET":
-        return render_template("buy.html")
+        return render_template("buy.html",quotes=quotes)
     else:
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
@@ -270,7 +279,7 @@ def logout():
 def quote():
     """Get stock quote."""
     if request.method == "GET":
-        return render_template("quote.html")
+        return render_template("quote.html",quotes=quotes)
     else:
         symbol = request.form.get("symbol")
         if not symbol:
