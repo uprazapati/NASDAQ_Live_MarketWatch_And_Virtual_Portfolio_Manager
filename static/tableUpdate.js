@@ -39,25 +39,25 @@ function tableUpdate()
           var totPL = 0;
 		  console.log(response);
           var r = JSON.parse(response);
-          for (var i = 1, row; i < table.rows.length-2; i++)
+          for (var i = 1, row; i < table.rows.length-3; i++)
           {
             row = table.rows[i];
             symbol = row.cells[0].innerHTML;
             currentPriceString= row.cells[3].innerHTML;
             currentPrice = convertPriceToFloat(currentPriceString);
             updatedPrice = convertPriceToFloat(r[symbol]);
-            row.cells[3].innerHTML = r[symbol];
-            var plColor = getColor(currentPrice,updatedPrice, row.cells[3].bgColor);
-            row.cells[3].bgColor = plColor;
+            row.cells[4].innerHTML = r[symbol];
+            var plColor = getColor(currentPrice,updatedPrice, row.cells[4].bgColor);
+            row.cells[4].bgColor = plColor;
 
             shares = parseInt(row.cells[2].innerHTML);
             var updatedValue = updatedPrice*shares;
-            var currentValue = convertPriceToFloat(row.cells[5].innerHTML);
-            var pl = getProfitLoss(currentValue, updatedValue);  
-            row.cells[4].innerHTML = "$" + parseFloat(pl.toFixed(2)).toLocaleString("en-US");
-            row.cells[5].innerHTML = "$" + parseFloat(updatedValue.toFixed(2)).toLocaleString("en-US");
-            row.cells[4].bgColor = plColor;
+            var currentValue = currentPrice*shares;
+            var pl = getProfitLoss(currentValue, updatedValue);
+            row.cells[5].innerHTML = "$" + parseFloat(pl.toFixed(2)).toLocaleString("en-US");
+            row.cells[6].innerHTML = "$" + parseFloat(updatedValue.toFixed(2)).toLocaleString("en-US");
             row.cells[5].bgColor = plColor;
+            row.cells[6].bgColor = plColor;
          
             totPL = totPL + pl;  
             updatedTotal = updatedTotal + updatedValue;
