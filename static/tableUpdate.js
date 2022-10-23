@@ -19,6 +19,12 @@ function getColor(current, updated, color)
   return color;
 }
 
+function getProfitLoss(current, updated)
+{
+    var pl = parseFloat(updated.toFixed(2)) -  parseFloat(current.toFixed(2));
+    return pl;
+}
+
 function tableUpdate()
 {
    var table = document.getElementById("symboltable");
@@ -30,7 +36,8 @@ function tableUpdate()
 			  success:function(response)
         {
           var updatedTotal = 0;
-				  console.log(response);
+          var totPL = 0;
+		  console.log(response);
           var r = JSON.parse(response);
           for (var i = 1, row; i < table.rows.length-2; i++)
           {
@@ -40,26 +47,41 @@ function tableUpdate()
             currentPrice = convertPriceToFloat(currentPriceString);
             updatedPrice = convertPriceToFloat(r[symbol]);
             row.cells[3].innerHTML = r[symbol];
-            row.cells[3].bgColor = getColor(currentPrice,updatedPrice, row.cells[3].bgColor);
+            var plColor = getColor(currentPrice,updatedPrice, row.cells[3].bgColor);
+            row.cells[3].bgColor = plColor;
 
             shares = parseInt(row.cells[2].innerHTML);
             var updatedValue = updatedPrice*shares;
-            var currentValue = convertPriceToFloat(row.cells[4].innerHTML);
-            row.cells[4].innerHTML = "$" + parseFloat(updatedValue.toFixed(2)).toLocaleString("en-US");
-            row.cells[4].bgColor = getColor(currentValue, updatedValue, row.cells[4].bgColor);
-          
+            var currentValue = convertPriceToFloat(row.cells[5].innerHTML);
+            var pl = getProfitLoss(currentValue, updatedValue);  
+            row.cells[4].innerHTML = "$" + parseFloat(pl.toFixed(2)).toLocaleString("en-US");
+            row.cells[5].innerHTML = "$" + parseFloat(updatedValue.toFixed(2)).toLocaleString("en-US");
+            row.cells[4].bgColor = plColor;
+            row.cells[5].bgColor = plColor;
+         
+            totPL = totPL + pl;  
             updatedTotal = updatedTotal + updatedValue;
           }
 
           var actualTotal = updatedTotal + convertPriceToFloat(document.getElementById("cash").innerHTML);
+          document.getElementById("PL").innerHTML = "$" + parseFloat(totPL.toFixed(2)).toLocaleString("en-US");
           document.getElementById("total").innerHTML = "$" + parseFloat(actualTotal.toFixed(2)).toLocaleString("en-US");
 
           if ( actualTotal > 10000 )
+          {
             document.getElementById("total").bgColor = "#92F15F";
+            document.getElementById("PL").bgColor = "#92F15F";
+          }
           else if ( actualTotal < 10000 )
+          {
             document.getElementById("total").bgColor = "#FC8A65";
+            document.getElementById("PL").bgColor = "#FC8A65";
+          }
           else
+          {
             document.getElementById("total").bgColor = "#FAF393";
+            document.getElementById("PL").bgColor = "#FAF393";
+          }
 			  },
 			  error: function(error)
         {

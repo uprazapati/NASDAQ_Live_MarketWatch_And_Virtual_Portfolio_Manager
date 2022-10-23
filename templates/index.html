@@ -12,12 +12,13 @@
                 <th>Name</th>
                 <th>Shares</th>
                 <th>Price</th>
+                <th>Profit/Loss</th>
                 <th>TOTAL</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td id="total">{{total}}</td>
             </tr>
         </tfoot>
@@ -28,11 +29,16 @@
                     <td>{{stock["name"]}}</td>
                     <td>{{stock["shares"]}}</td>
                     <td>{{stock["price"]}}</td>
+                    <td>"0"</td>
                     <td>{{stock["total"]}}</td>
                 </tr>
              {% endfor %}
             <tr>
-                <td colspan="4">CASH</td>
+                <td colspan="5">P/L</td>
+                <td id="PL">"0"</td>
+            </tr>
+            <tr>
+                <td colspan="5">CASH</td>
                 <td id="cash">{{cash}}</td>
             </tr>
         </tbody>
