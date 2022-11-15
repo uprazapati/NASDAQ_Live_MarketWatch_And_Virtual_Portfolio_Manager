@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Portflio
+    Portfolio
 {% endblock %}
 
 {% block main %}
@@ -11,13 +11,15 @@
                 <th>Symbol</th>
                 <th>Name</th>
                 <th>Shares</th>
+                <th>Buy Price</th>
                 <th>Price</th>
+                <th>Profit/Loss</th>
                 <th>TOTAL</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="6"></td>
                 <td id="total">{{total}}</td>
             </tr>
         </tfoot>
@@ -27,12 +29,18 @@
                     <td>{{stock["symbol"]}}</td>
                     <td>{{stock["name"]}}</td>
                     <td>{{stock["shares"]}}</td>
+                    <td>{{stock["buyPrice"]}}</td>
                     <td>{{stock["price"]}}</td>
+                    <td>"0"</td>
                     <td>{{stock["total"]}}</td>
                 </tr>
              {% endfor %}
             <tr>
-                <td colspan="4">CASH</td>
+                <td colspan="6">P/L</td>
+                <td id="PL">"0"</td>
+            </tr>
+            <tr>
+                <td colspan="6">CASH</td>
                 <td id="cash">{{cash}}</td>
             </tr>
         </tbody>

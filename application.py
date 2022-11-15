@@ -49,7 +49,7 @@ with open('nasdaq.csv', 'r',) as file:
     for row in reader:
         quotes.append(row[0])
 
-print(quotes)
+#print(quotes)
 
 symbolsRows = db.execute("select uid, symbol from stocks")
 for symbol in symbolsRows:
@@ -78,6 +78,7 @@ if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 
 
+buyPriceDictCurrentUser = {}
 @app.route("/")
 @login_required
 def index():
@@ -90,6 +91,10 @@ def index():
     cash = rows[0]["cash"]
     total = cash
 
+    history = db.execute("select symbol, price from history where uid=:uid", uid=session["user_id"])
+    for h in history:
+        buyPriceDictCurrentUser[h["symbol"]] = h["price"]
+
     stocksList = db.execute("select symbol, name, shares from stocks where uid=:uid", uid=session["user_id"])
 
     stocksListWithPrice = stocksList
@@ -101,7 +106,9 @@ def index():
         quotesDict = lookups(symbolsList)
 
         for i in range(len(stocksList)):
-        
+       
+
+            stocksListWithPrice[i]["buyPrice"] = usd(buyPriceDictCurrentUser[stocksList[i]["symbol"]])
             price = 0.00
             quote = quotesDict[stocksList[i]["symbol"]]
 
